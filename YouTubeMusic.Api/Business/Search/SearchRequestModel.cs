@@ -2,7 +2,7 @@
 {
     public class SearchRequestModel
     {
-        private Context Context { get; set; } = new();
+        public Context Context { get; set; } = new();
         public string Query { get; set; } = string.Empty;
     }
 
