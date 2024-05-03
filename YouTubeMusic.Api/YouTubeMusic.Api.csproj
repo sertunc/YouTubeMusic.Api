@@ -10,4 +10,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SelenyumMicroService.Api.Client">
+      <HintPath>..\External_dlls\SelenyumMicroService.Api.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="SelenyumMicroService.Shared">
+      <HintPath>..\External_dlls\SelenyumMicroService.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
