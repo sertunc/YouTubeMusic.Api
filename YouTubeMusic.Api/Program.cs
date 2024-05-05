@@ -1,6 +1,4 @@
 using System.Net.Http.Headers;
-using System.Net.Sockets;
-using YouTubeMusic.Api.BootStrappers;
 using YouTubeMusic.Api.Business.Search;
 
 var builder = WebApplication.CreateBuilder(args);

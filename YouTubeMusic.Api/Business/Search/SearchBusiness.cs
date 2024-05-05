@@ -15,13 +15,7 @@ namespace YouTubeMusic.Api.Business.Search
         {
             var result = await searchHttpClient.Search(searchRequestModel);
 
-            //return Task.FromResult(Response<SearchResponseModel>.Success(new SearchResponseModel()
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    Name = searchRequestModel.Query
-            //}, 200));
-
-            return null;
+            return result;
         }
     }
 }

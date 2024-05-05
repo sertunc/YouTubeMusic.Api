@@ -1,7 +1,5 @@
-﻿using SelenyumMicroService.Api.Client.BaseClients;
-using SelenyumMicroService.Shared.Dtos;
-using System.Text.Json;
-using System.Text;
+﻿using SelenyumMicroService.Shared.Dtos;
+using System.Net;
 
 namespace YouTubeMusic.Api.Business.Search
 {
@@ -18,19 +16,26 @@ namespace YouTubeMusic.Api.Business.Search
 
         public async Task<Response<SearchResponseModel>> Search(SearchRequestModel searchRequestModel)
         {
-            var content = new StringContent(JsonSerializer.Serialize(searchRequestModel), Encoding.UTF8, "application/json");
-            var response = await httpClient.PostAsync("search?prettyPrint=false", content);
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync("search?prettyPrint=false", searchRequestModel);
 
-            var result = await ReadResponseStream(response);
+                response.EnsureSuccessStatusCode();
 
-            return null;
-        }
+                var result = await response.Content.ReadAsStringAsync();
 
-        private static async Task<string> ReadResponseStream(HttpResponseMessage response)
-        {
-            using var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync());
-            var result = await streamReader.ReadToEndAsync();
-            return result;
+                var searchResponseModel = SearchParser.Parse(result);
+
+                return Response<SearchResponseModel>.Success(searchResponseModel);
+            }
+            catch (HttpRequestException httpRequestException)
+            {
+                return Response<SearchResponseModel>.Fail(httpRequestException.Message, (int)(httpRequestException.StatusCode ?? HttpStatusCode.InternalServerError));
+            }
+            catch (Exception ex)
+            {
+                return Response<SearchResponseModel>.Fail(ex.Message);
+            }
         }
     }
 }
