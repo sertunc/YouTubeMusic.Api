@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using YouTubeMusic.Api.Business.Search;
+using YouTubeMusic.Api.Business.Search.Parsers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,14 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 var baseUrl = builder.Configuration["YouTubeMusicApiUrls:Base"];
 ArgumentNullException.ThrowIfNull(baseUrl);
 
-//var searchUrl = builder.Configuration["YouTubeMusicApiUrls:Search"];
-//ArgumentNullException.ThrowIfNull(searchUrl);
-//builder.Services.AddCustomHttpClient<ISearchBusiness, SearchHttpClient>(string.Concat(baseUrl, searchUrl));
 builder.Services.AddHttpClient<SearchHttpClient>(client =>
 {
     client.BaseAddress = new Uri(baseUrl);
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
+builder.Services.AddScoped<ISearchParser, BestResultSearchParser>();
 builder.Services.AddScoped<ISearchBusiness, SearchBusiness>();
 
 builder.Services.AddControllers();

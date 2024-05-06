@@ -11,7 +11,7 @@ namespace YouTubeMusic.Api.Business.Search
             this.searchHttpClient = searchHttpClient ?? throw new ArgumentNullException(nameof(searchHttpClient));
         }
 
-        public async Task<Response<SearchResponseModel>> Search(SearchRequestModel searchRequestModel)
+        public async Task<Response<List<SearchResponseModel>>> Search(SearchRequestModel searchRequestModel)
         {
             var result = await searchHttpClient.Search(searchRequestModel);
 

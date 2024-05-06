@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Text;
 
-namespace YouTubeMusic.Api.Business.Search
+namespace YouTubeMusic.Api.Business.Search.Parsers
 {
-    public static class SearchParser
+    public class BestResultSearchParser : BaseSearchParser, ISearchParser
     {
-        public static SearchResponseModel Parse(string json)
+        public SearchResponseModel Parse(string json)
         {
             var jsonObject = JObject.Parse(json);
-            var resultRootObject = GetRootObject(jsonObject);
+            var resultRootObject = base.GetRootObject(jsonObject)?[0]?["musicCardShelfRenderer"];
 
             var title = resultRootObject?["title"]?["runs"]?[0]?["text"]?.ToString();
 
@@ -42,11 +42,6 @@ namespace YouTubeMusic.Api.Business.Search
                 WatchId = string.IsNullOrEmpty(watchId) ? "Not found" : watchId,
                 ThumbnailUrl = string.IsNullOrEmpty(thumbnailUrl) ? "Not found" : thumbnailUrl,
             };
-        }
-
-        private static JToken? GetRootObject(JObject obj)
-        {
-            return obj?["contents"]?["tabbedSearchResultsRenderer"]?["tabs"]?[0]?["tabRenderer"]?["content"]?["sectionListRenderer"]?["contents"]?[0]?["musicCardShelfRenderer"];
         }
     }
 }
