@@ -5,7 +5,7 @@ namespace YouTubeMusic.Api.Business.Search.Parsers
 {
     public class BestResultSearchParser : BaseSearchParser, ISearchParser
     {
-        public SearchResponseModel Parse(string json)
+        public List<SearchResponseModel> Parse(string json)
         {
             var jsonObject = JObject.Parse(json);
             var resultRootObject = base.GetRootObject(jsonObject)?[0]?["musicCardShelfRenderer"];
@@ -35,13 +35,16 @@ namespace YouTubeMusic.Api.Business.Search.Parsers
 
             var watchId = resultRootObject?["onTap"]?["watchEndpoint"]?["videoId"]?.ToString();
 
-            return new SearchResponseModel
-            {
-                Title = string.IsNullOrEmpty(title) ? "Not found" : title,
-                Subtitle = subtitleResult.ToString(),
-                WatchId = string.IsNullOrEmpty(watchId) ? "Not found" : watchId,
-                ThumbnailUrl = string.IsNullOrEmpty(thumbnailUrl) ? "Not found" : thumbnailUrl,
-            };
+            return
+            [
+                new SearchResponseModel
+                {
+                    Title = string.IsNullOrEmpty(title) ? "Not found" : title,
+                    Subtitle = subtitleResult.ToString(),
+                    WatchId = string.IsNullOrEmpty(watchId) ? "Not found" : watchId,
+                    ThumbnailUrl = string.IsNullOrEmpty(thumbnailUrl) ? "Not found" : thumbnailUrl,
+                }
+            ];
         }
     }
 }

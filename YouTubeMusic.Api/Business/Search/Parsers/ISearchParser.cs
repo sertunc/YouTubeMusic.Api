@@ -2,6 +2,6 @@
 {
     public interface ISearchParser
     {
-        SearchResponseModel Parse(string json);
+        List<SearchResponseModel> Parse(string json);
     }
 }

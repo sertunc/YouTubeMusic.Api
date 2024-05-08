@@ -14,6 +14,7 @@ builder.Services.AddHttpClient<SearchHttpClient>(client =>
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
 builder.Services.AddScoped<ISearchParser, BestResultSearchParser>();
+builder.Services.AddScoped<ISearchParser, SongSectionSearchParser>();
 builder.Services.AddScoped<ISearchBusiness, SearchBusiness>();
 
 builder.Services.AddControllers();
