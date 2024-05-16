@@ -1,5 +1,6 @@
 ﻿using SelenyumMicroService.Shared.Dtos;
 using System.Net;
+using YouTubeMusic.Api.Business.Search.Models;
 using YouTubeMusic.Api.Business.Search.Parsers;
 
 namespace YouTubeMusic.Api.Business.Search

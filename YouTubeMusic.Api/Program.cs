@@ -1,10 +1,16 @@
 using System.Net.Http.Headers;
+using YouTubeMusic.Api;
 using YouTubeMusic.Api.Business.Search;
 using YouTubeMusic.Api.Business.Search.Parsers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton(serviceProvider =>
+{
+    return new YouTubeServiceFactory("client_secret.json");
+});
+
 var baseUrl = builder.Configuration["YouTubeMusicApiUrls:Base"];
 ArgumentNullException.ThrowIfNull(baseUrl);
 

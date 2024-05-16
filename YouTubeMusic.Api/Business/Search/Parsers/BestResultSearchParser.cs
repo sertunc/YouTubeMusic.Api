@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Text;
+using YouTubeMusic.Api.Business.Search.Models;
 
 namespace YouTubeMusic.Api.Business.Search.Parsers
 {

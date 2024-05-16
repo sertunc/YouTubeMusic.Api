@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using YouTubeMusic.Api.Business.Search;
+using YouTubeMusic.Api.Business.Search.Models;
 
 namespace YouTubeMusic.Api.Controllers
 {

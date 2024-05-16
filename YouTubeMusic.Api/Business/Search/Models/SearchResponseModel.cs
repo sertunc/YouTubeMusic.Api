@@ -1,4 +1,4 @@
-﻿namespace YouTubeMusic.Api.Business.Search
+﻿namespace YouTubeMusic.Api.Business.Search.Models
 {
     public class SearchResponseModel
     {

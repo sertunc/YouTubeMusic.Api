@@ -1,4 +1,6 @@
-﻿namespace YouTubeMusic.Api.Business.Search.Parsers
+﻿using YouTubeMusic.Api.Business.Search.Models;
+
+namespace YouTubeMusic.Api.Business.Search.Parsers
 {
     public interface ISearchParser
     {
