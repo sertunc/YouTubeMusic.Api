@@ -7,13 +7,10 @@ using YouTubeMusic.Api.Business.Search.Parsers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton(serviceProvider =>
-{
-    return new YouTubeServiceFactory("client_secret.json");
-});
-
 var baseUrl = builder.Configuration["YouTubeMusicApiUrls:Base"];
 ArgumentNullException.ThrowIfNull(baseUrl);
+
+builder.Services.AddScoped<YouTubeServiceFactory>();
 
 builder.Services.AddHttpClient<SearchHttpClient>(client =>
 {

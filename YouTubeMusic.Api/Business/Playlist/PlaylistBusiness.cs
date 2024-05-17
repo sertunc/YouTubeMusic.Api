@@ -17,7 +17,9 @@ namespace YouTubeMusic.Api.Business.Playlist
         {
             try
             {
-                var youtubeService = youTubeServiceFactory.GetYouTubeService();
+                ArgumentNullException.ThrowIfNull(model.UserId);
+
+                var youtubeService = youTubeServiceFactory.GetYouTubeService(model.UserId);
 
                 var newPlaylist = new Google.Apis.YouTube.v3.Data.Playlist
                 {

@@ -7,28 +7,26 @@ namespace YouTubeMusic.Api
 {
     public class YouTubeServiceFactory
     {
-        private readonly YouTubeService _youTubeService;
-
-        public YouTubeServiceFactory(string clientSecretJsonPath)
+        public YouTubeService GetYouTubeService(string userId)
         {
             UserCredential credential;
-            using (var stream = new FileStream(clientSecretJsonPath, FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
             {
+                var dataStore = new FileDataStore($"{this.GetType()}_{userId}");
+
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.FromStream(stream).Secrets,
                     [YouTubeService.Scope.Youtube],
                     "user",
                     CancellationToken.None,
-                    new FileDataStore(this.GetType().ToString())).GetAwaiter().GetResult();
+                    dataStore).GetAwaiter().GetResult();
             }
 
-            _youTubeService = new YouTubeService(new BaseClientService.Initializer()
+            return new YouTubeService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = this.GetType().ToString()
             });
         }
-
-        public YouTubeService GetYouTubeService() => _youTubeService;
     }
 }
