@@ -1,5 +1,5 @@
-﻿using Google.Apis.YouTube.v3.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using YouTubeMusic.Api.Business.Playlist;
 using YouTubeMusic.Api.Business.Playlist.Models;
 
 namespace YouTubeMusic.Api.Controllers
@@ -9,42 +9,25 @@ namespace YouTubeMusic.Api.Controllers
     public class PlaylistController : ControllerBase
     {
         private readonly ILogger<SearchController> logger;
-        private readonly YouTubeServiceFactory youTubeServiceFactory;
+        private readonly IPlaylistBusiness playlistBusiness;
 
-        public PlaylistController(ILogger<SearchController> logger, YouTubeServiceFactory youTubeServiceFactory)
+        public PlaylistController(ILogger<SearchController> logger, IPlaylistBusiness playlistBusiness)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.youTubeServiceFactory = youTubeServiceFactory ?? throw new ArgumentNullException(nameof(youTubeServiceFactory));
+            this.playlistBusiness = playlistBusiness ?? throw new ArgumentNullException(nameof(playlistBusiness));
         }
 
         //C:\Users\sertu\AppData\Roaming\YouTubeMusic.Api.Controllers.PlaylistController
         //https://github.com/youtube/api-samples/tree/master/dotnet
         //https://console.cloud.google.com/apis/credentials/consent?project=spotfiy-to-youtube-music
         [HttpPost]
-        public async Task<IActionResult> Add(PlaylistAddRequestModel playlistAddRequestModel)
+        public async Task<IActionResult> Add(PlaylistCreateRequestModel model)
         {
-            logger.LogDebug("Adding playlist with name {PlaylistName}", playlistAddRequestModel.Title);
+            logger.LogDebug("Adding playlist with name {Title}", model.Title);
 
-            var youtubeService = youTubeServiceFactory.GetYouTubeService();
+            var result = await playlistBusiness.Create(model);
 
-            // Create a new, private playlist in the authorized user's channel.
-            var newPlaylist = new Playlist
-            {
-                Snippet = new PlaylistSnippet
-                {
-                    Title = playlistAddRequestModel.Title,
-                    Description = playlistAddRequestModel.Description
-                },
-                Status = new PlaylistStatus
-                {
-                    PrivacyStatus = playlistAddRequestModel.PrivacyStatus
-                }
-            };
-
-            var result = await youtubeService.Playlists.Insert(newPlaylist, "snippet,status").ExecuteAsync();
-
-            //return StatusCode(result.StatusCode, result);
-            return Ok();
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

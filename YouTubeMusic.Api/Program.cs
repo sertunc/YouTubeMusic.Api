@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using YouTubeMusic.Api;
+using YouTubeMusic.Api.Business.Playlist;
 using YouTubeMusic.Api.Business.Search;
 using YouTubeMusic.Api.Business.Search.Parsers;
 
@@ -22,6 +23,8 @@ builder.Services.AddHttpClient<SearchHttpClient>(client =>
 builder.Services.AddScoped<ISearchParser, BestResultSearchParser>();
 builder.Services.AddScoped<ISearchParser, SongSectionSearchParser>();
 builder.Services.AddScoped<ISearchBusiness, SearchBusiness>();
+
+builder.Services.AddScoped<IPlaylistBusiness, PlaylistBusiness>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
