@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using YouTubeMusic.Api;
+using YouTubeMusic.Api.Business.Login;
 using YouTubeMusic.Api.Business.Playlist;
 using YouTubeMusic.Api.Business.Search;
 using YouTubeMusic.Api.Business.Search.Parsers;
@@ -11,6 +12,8 @@ var baseUrl = builder.Configuration["YouTubeMusicApiUrls:Base"];
 ArgumentNullException.ThrowIfNull(baseUrl);
 
 builder.Services.AddScoped<YouTubeServiceFactory>();
+
+builder.Services.AddScoped<ILoginBusiness, LoginBusiness>();
 
 builder.Services.AddHttpClient<SearchHttpClient>(client =>
 {

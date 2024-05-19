@@ -6,6 +6,8 @@ namespace YouTubeMusic.Api.Business.Playlist
 {
     public class PlaylistBusiness : IPlaylistBusiness
     {
+        private const string ResourceProperties = "snippet,status";
+
         private readonly YouTubeServiceFactory youTubeServiceFactory;
 
         public PlaylistBusiness(YouTubeServiceFactory youTubeServiceFactory)
@@ -34,7 +36,7 @@ namespace YouTubeMusic.Api.Business.Playlist
                     }
                 };
 
-                var youtubeServiceResult = await youtubeService.Playlists.Insert(newPlaylist, "snippet,status").ExecuteAsync();
+                var youtubeServiceResult = await youtubeService.Playlists.Insert(newPlaylist, ResourceProperties).ExecuteAsync();
 
                 if (youtubeServiceResult != null)
                 {

@@ -16,7 +16,8 @@ namespace YouTubeMusic.Api
 
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.FromStream(stream).Secrets,
-                    [YouTubeService.Scope.Youtube],
+                    [YouTubeService.Scope.Youtube,
+                     YouTubeService.Scope.YoutubeReadonly],
                     "user",
                     CancellationToken.None,
                     dataStore).GetAwaiter().GetResult();
