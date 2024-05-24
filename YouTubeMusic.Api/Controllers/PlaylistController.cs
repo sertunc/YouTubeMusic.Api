@@ -21,9 +21,9 @@ namespace YouTubeMusic.Api.Controllers
         //https://github.com/youtube/api-samples/tree/master/dotnet
         //https://console.cloud.google.com/apis/credentials/consent?project=spotfiy-to-youtube-music
         [HttpPost]
-        public async Task<IActionResult> Add(PlaylistCreateRequestModel model)
+        public async Task<IActionResult> Create(PlaylistCreateRequestModel model)
         {
-            logger.LogDebug("Adding playlist with name {Title}", model.Title);
+            logger.LogDebug("Creating playlist with name {Title}", model.Title);
 
             var result = await playlistBusiness.Create(model);
 
