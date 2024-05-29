@@ -29,5 +29,15 @@ namespace YouTubeMusic.Api.Controllers
 
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpPost("addItem")]
+        public async Task<IActionResult> AddPlaylistItem(AddPlaylistItemRequestModel model)
+        {
+            logger.LogDebug("Adding playlist item with PlaylistId {PlaylistId} WatchId {WatchId}", model.PlaylistId, model.WatchId);
+
+            var result = await playlistBusiness.AddPlaylistItem(model);
+
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

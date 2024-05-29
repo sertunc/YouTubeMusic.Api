@@ -19,7 +19,7 @@ namespace YouTubeMusic.Api.Business.Playlist
         {
             try
             {
-                ArgumentNullException.ThrowIfNull(model.UserId);
+                ArgumentException.ThrowIfNullOrEmpty(model.UserId);
 
                 var youtubeService = youTubeServiceFactory.GetYouTubeService(model.UserId);
 
@@ -57,6 +57,49 @@ namespace YouTubeMusic.Api.Business.Playlist
             catch (Exception ex)
             {
                 return Response<PlaylistCreateResponseModel>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<Response<AddPlaylistItemResponseModel>> AddPlaylistItem(AddPlaylistItemRequestModel model)
+        {
+            try
+            {
+                ArgumentException.ThrowIfNullOrEmpty(model.PlaylistId);
+                ArgumentException.ThrowIfNullOrEmpty(model.WatchId);
+
+                var youtubeService = youTubeServiceFactory.GetYouTubeService(model.UserId);
+
+                var newPlaylistItem = new PlaylistItem();
+                newPlaylistItem.Snippet = new PlaylistItemSnippet();
+                newPlaylistItem.Snippet.PlaylistId = model.PlaylistId;
+                newPlaylistItem.Snippet.ResourceId = new ResourceId();
+                newPlaylistItem.Snippet.ResourceId.Kind = "youtube#video";
+                newPlaylistItem.Snippet.ResourceId.VideoId = model.WatchId;
+
+                var youtubeServiceResult = await youtubeService.PlaylistItems.Insert(newPlaylistItem, ResourceProperties).ExecuteAsync();
+
+                if (youtubeServiceResult != null)
+                {
+                    var result = new AddPlaylistItemResponseModel
+                    {
+                        ChannelId = string.IsNullOrEmpty(youtubeServiceResult.Snippet.ChannelId) ? "Not found" : youtubeServiceResult.Snippet.ChannelId,
+                        ChannelTitle = string.IsNullOrEmpty(youtubeServiceResult.Snippet.ChannelTitle) ? "Not found" : youtubeServiceResult.Snippet.ChannelTitle,
+                        PlaylistId = string.IsNullOrEmpty(youtubeServiceResult.Snippet.PlaylistId) ? "Not found" : youtubeServiceResult.Snippet.PlaylistId,
+                        Title = string.IsNullOrEmpty(youtubeServiceResult.Snippet.Title) ? "Not found" : youtubeServiceResult.Snippet.Title,
+                        VideoOwnerChannelTitle = string.IsNullOrEmpty(youtubeServiceResult.Snippet.VideoOwnerChannelTitle) ? "Not found" : youtubeServiceResult.Snippet.VideoOwnerChannelTitle,
+                        VideoOwnerChannelId = string.IsNullOrEmpty(youtubeServiceResult.Snippet.VideoOwnerChannelId) ? "Not found" : youtubeServiceResult.Snippet.VideoOwnerChannelId,
+                    };
+
+                    return Response<AddPlaylistItemResponseModel>.Success(result);
+                }
+                else
+                {
+                    return Response<AddPlaylistItemResponseModel>.Fail("Playlist item could not be added!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Response<AddPlaylistItemResponseModel>.Fail(ex.Message);
             }
         }
     }
