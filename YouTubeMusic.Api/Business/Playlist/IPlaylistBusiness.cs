@@ -7,6 +7,8 @@ namespace YouTubeMusic.Api.Business.Playlist
     {
         Task<Response<PlaylistCreateResponseModel>> Create(PlaylistCreateRequestModel model);
 
+        Task<Response<bool>> Delete(PlaylistDeleteRequestModel model);
+
         Task<Response<AddPlaylistItemResponseModel>> AddPlaylistItem(AddPlaylistItemRequestModel model);
     }
 }

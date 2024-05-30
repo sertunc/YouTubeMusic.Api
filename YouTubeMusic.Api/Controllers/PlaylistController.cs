@@ -30,6 +30,16 @@ namespace YouTubeMusic.Api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> Delete(PlaylistDeleteRequestModel model)
+        {
+            logger.LogDebug("Deleting playlist with name {Title}", model.PlaylistId);
+
+            var result = await playlistBusiness.Delete(model);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
         [HttpPost("addItem")]
         public async Task<IActionResult> AddPlaylistItem(AddPlaylistItemRequestModel model)
         {

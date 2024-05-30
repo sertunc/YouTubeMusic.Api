@@ -60,6 +60,32 @@ namespace YouTubeMusic.Api.Business.Playlist
             }
         }
 
+        public async Task<Response<bool>> Delete(PlaylistDeleteRequestModel model)
+        {
+            try
+            {
+                ArgumentException.ThrowIfNullOrEmpty(model.UserId);
+                ArgumentException.ThrowIfNullOrEmpty(model.PlaylistId);
+
+                var youtubeService = youTubeServiceFactory.GetYouTubeService(model.UserId);
+
+                var youtubeServiceResult = await youtubeService.Playlists.Delete(model.PlaylistId).ExecuteAsync();
+
+                if (youtubeServiceResult != null)
+                {
+                    return Response<bool>.Success(true);
+                }
+                else
+                {
+                    return Response<bool>.Fail("Playlist could not be deleted!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Response<bool>.Fail(ex.Message);
+            }
+        }
+
         public async Task<Response<AddPlaylistItemResponseModel>> AddPlaylistItem(AddPlaylistItemRequestModel model)
         {
             try
