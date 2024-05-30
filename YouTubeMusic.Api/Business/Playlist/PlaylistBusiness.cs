@@ -20,6 +20,7 @@ namespace YouTubeMusic.Api.Business.Playlist
             try
             {
                 ArgumentException.ThrowIfNullOrEmpty(model.UserId);
+                ArgumentException.ThrowIfNullOrEmpty(model.Title);
 
                 var youtubeService = youTubeServiceFactory.GetYouTubeService(model.UserId);
 
@@ -90,6 +91,7 @@ namespace YouTubeMusic.Api.Business.Playlist
         {
             try
             {
+                ArgumentException.ThrowIfNullOrEmpty(model.UserId);
                 ArgumentException.ThrowIfNullOrEmpty(model.PlaylistId);
                 ArgumentException.ThrowIfNullOrEmpty(model.WatchId);
 
@@ -126,6 +128,34 @@ namespace YouTubeMusic.Api.Business.Playlist
             catch (Exception ex)
             {
                 return Response<AddPlaylistItemResponseModel>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<Response<bool>> DeletePlaylistItem(DeletePlaylistItemRequestModel model)
+        {
+            try
+            {
+                ArgumentException.ThrowIfNullOrEmpty(model.UserId);
+                ArgumentException.ThrowIfNullOrEmpty(model.PlaylistItemId);
+
+                var youtubeService = youTubeServiceFactory.GetYouTubeService(model.UserId);
+
+                //which playlist?
+                //bug here
+                var youtubeServiceResult = await youtubeService.PlaylistItems.Delete(model.PlaylistItemId).ExecuteAsync();
+
+                if (youtubeServiceResult != null)
+                {
+                    return Response<bool>.Success(true);
+                }
+                else
+                {
+                    return Response<bool>.Fail("Playlist item could not be deleted!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Response<bool>.Fail(ex.Message);
             }
         }
     }

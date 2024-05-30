@@ -49,5 +49,15 @@ namespace YouTubeMusic.Api.Controllers
 
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpDelete("deleteItem")]
+        public async Task<IActionResult> DeletePlaylistItem(DeletePlaylistItemRequestModel model)
+        {
+            logger.LogDebug("Deleting playlist item with WatchId {WatchId}", model.PlaylistItemId);
+
+            var result = await playlistBusiness.DeletePlaylistItem(model);
+
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

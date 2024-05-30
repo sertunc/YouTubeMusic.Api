@@ -10,5 +10,7 @@ namespace YouTubeMusic.Api.Business.Playlist
         Task<Response<bool>> Delete(PlaylistDeleteRequestModel model);
 
         Task<Response<AddPlaylistItemResponseModel>> AddPlaylistItem(AddPlaylistItemRequestModel model);
+
+        Task<Response<bool>> DeletePlaylistItem(DeletePlaylistItemRequestModel model);
     }
 }
