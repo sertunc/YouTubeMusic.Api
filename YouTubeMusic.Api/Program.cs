@@ -5,6 +5,8 @@ using YouTubeMusic.Api.Business.Playlist;
 using YouTubeMusic.Api.Business.Search;
 using YouTubeMusic.Api.Business.Search.Parsers;
 
+const string policyName = "CorsPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -31,6 +33,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: policyName,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                      });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,8 +53,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(policyName);
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
