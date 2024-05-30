@@ -30,7 +30,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-If you want to contact me, you can reach me at [sertuncselen@example.com](mailto:sertuncselen@example.com).
+If you want to contact me, you can reach me at [sertuncselen@yahoo.com](mailto:sertuncselen@yahoo.com).
 
 ## Acknowledgements
 
