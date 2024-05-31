@@ -39,6 +39,7 @@ namespace YouTubeMusic.Api.Business.Playlist
                             Id = string.IsNullOrEmpty(x.Id) ? "Not found" : x.Id,
                             Name = string.IsNullOrEmpty(x.Snippet.Title) ? "Not found" : x.Snippet.Title,
                             Description = x.Snippet.Description,
+                            ImageUrl = x.Snippet.Thumbnails.Default__.Url,
                         }).ToList();
 
                     return Response<List<PlaylistResponseModel>>.Success(result);
