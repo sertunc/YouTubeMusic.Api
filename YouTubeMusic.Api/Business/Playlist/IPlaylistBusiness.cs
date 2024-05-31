@@ -5,6 +5,8 @@ namespace YouTubeMusic.Api.Business.Playlist
 {
     public interface IPlaylistBusiness
     {
+        Task<Response<List<PlaylistResponseModel>>> List(string userId);
+
         Task<Response<PlaylistCreateResponseModel>> Create(PlaylistCreateRequestModel model);
 
         Task<Response<bool>> Delete(PlaylistDeleteRequestModel model);

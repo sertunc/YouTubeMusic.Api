@@ -20,6 +20,16 @@ namespace YouTubeMusic.Api.Controllers
         //C:\Users\sertu\AppData\Roaming\YouTubeMusic.Api.Controllers.PlaylistController
         //https://github.com/youtube/api-samples/tree/master/dotnet
         //https://console.cloud.google.com/apis/credentials/consent?project=spotfiy-to-youtube-music
+        [HttpGet]
+        public async Task<IActionResult> List(string userId)
+        {
+            logger.LogDebug("Listing playlist");
+
+            var result = await playlistBusiness.List(userId);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(PlaylistCreateRequestModel model)
         {

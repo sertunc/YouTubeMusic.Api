@@ -15,6 +15,45 @@ namespace YouTubeMusic.Api.Business.Playlist
             this.youTubeServiceFactory = youTubeServiceFactory ?? throw new ArgumentNullException(nameof(youTubeServiceFactory));
         }
 
+        public async Task<Response<List<PlaylistResponseModel>>> List(string userId)
+        {
+            try
+            {
+                ArgumentException.ThrowIfNullOrEmpty(userId);
+
+                var youtubeService = youTubeServiceFactory.GetYouTubeService(userId);
+
+                var listRequest = youtubeService.Playlists.List(ResourceProperties);
+                listRequest.Mine = true;
+                listRequest.MaxResults = int.MaxValue;
+
+                var youtubeServiceResult = await listRequest.ExecuteAsync();
+
+                if (youtubeServiceResult != null)
+                {
+                    var result = youtubeServiceResult.Items.
+                        Select(x => new PlaylistResponseModel
+                        {
+                            ChannelId = string.IsNullOrEmpty(x.Snippet.ChannelId) ? "Not found" : x.Snippet.ChannelId,
+                            ChannelTitle = string.IsNullOrEmpty(x.Snippet.ChannelTitle) ? "Not found" : x.Snippet.ChannelTitle,
+                            Id = string.IsNullOrEmpty(x.Id) ? "Not found" : x.Id,
+                            Name = string.IsNullOrEmpty(x.Snippet.Title) ? "Not found" : x.Snippet.Title,
+                            Description = x.Snippet.Description,
+                        }).ToList();
+
+                    return Response<List<PlaylistResponseModel>>.Success(result);
+                }
+                else
+                {
+                    return Response<List<PlaylistResponseModel>>.Fail("Playlist could not be listed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Response<List<PlaylistResponseModel>>.Fail(ex.Message);
+            }
+        }
+
         public async Task<Response<PlaylistCreateResponseModel>> Create(PlaylistCreateRequestModel model)
         {
             try
